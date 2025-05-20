@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IWasHereToLive</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+<body class="night-mode">
+  <header>
+      <div class="nav-menu">
+        <a href="#about"><button>About us</button></a>
+        <a href="#contact"><button>Contact</button></a>
+      </div>
+    </div>
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Search users or letters..." onkeydown="handleSearch(event)">
+    </div>
+    <div class="account-actions">
+      <a href="LOGINIWH1.html"><button>Login</button></a>
+      <button onclick="viewCart()">Cart</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>IWasHereToLive</h1>
+      <p>Leave Your Mark on Digital Eternity</p>
+      <p>IWasHereToLive is a permanent, public monument built by humanity, one pixel at a time. No likes. No algorithms. Just your mark — here, forever.</p>
+    </section>
+
+    <section class="carousel">
+      <h2 id="carouselLetterLabel" class="carousel-label">Letter: A</h2>
+      <canvas id="carouselCanvas"></canvas>
+      <a href="BUY1.html"><button class="buy-button" onclick="showAllYards()">🛒 Buy My Space</button>
+      </a>
+    </section>
+
+    <section id="popup" class="popup hidden" onclick="closePopup(event)">
+      <div class="popup-inner">
+        <canvas id="pixelCanvas"></canvas>
+      </div>
+    </section>
+
+    <section id="who" class="page-section hidden">
+      <h2>Who We Are</h2>
+      <p>IWasHereToLive is a modern cultural landmark: a shared space where anyone can leave a small but permanent mark. Each pixel is yours for life — unchangeable, unmistakable, and linked to your identity or message. No data mining. No reposts. Just you, preserved in digital stone.</p>
+    </section>
+
+    <section id="why" class="page-section hidden">
+      <h2>Why We Do It</h2>
+      <p>The internet moves fast — but memory should last. We created IWasHere to give people a way to be remembered, to participate in something timeless. This is not a social network. It’s not a financial product. It’s a participatory monument. A global mosaic of presence, pride, and permanence.</p>
+    </section>
+
+    <section id="faq" class="page-section hidden">
+      <h2>Frequently Asked Questions</h2>
+      <p><strong>What is IWasHereToLive?</strong> A giant digital canvas made of 2.6 billion pixels across 26 letter-shaped spaces. Each pixel can be bought once and linked to your message, artwork, or identity.</p>
+      <p><strong>How much does it cost?</strong> €5 per pixel — one-time purchase, valid for life.</p>
+      <p><strong>Can I edit my pixel?</strong> Yes, you can customize your pixel after purchase. You can also transfer ownership once if you choose.</p>
+      <p><strong>Is this an investment or a cryptocurrency?</strong> No. IWasHereToLive is not a token or a tradable asset. It’s cultural, not financial. There’s no resale market and no speculative value — only the meaning you give it.</p>
+      <p><strong>Who sees my pixel?</strong> Everyone. The IWasHereToLive canvas is public, searchable, and designed to last indefinitely.</p>
+      <p><strong>Do I need an account?</strong> You can log in using your email or social media to manage your pixels. You don’t need an account to explore the monument.</p>
+    </section>
+    <div id="letterPopup" class="letter-popup hidden" onclick="closePopup(event)">
+        <div class="letter-popup-inner" onclick="event.stopPropagation()">
+        </div>
+      </div>
+  
+  </main>
+
+  <footer>
+    <div>
+      <p>© 2025 IWasHereToLive. All rights reserved.</p>
+      <p><a href="https://www.instagram.com/martinquaetfaslem/">Instagram</a> | <a href="#">Twitter</a></p>
+      <p>Payment options:<br><span class="payment-icons">💳 Stripe &nbsp;&nbsp; 🅿️ PayPal</span></p>
+      <p class="legal-links">
+        <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Legal Notice</a>
+      </p>
+    </div>
+    <script>
+        let carouselIndex = 0;
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    
+        function rotateCarousel() {
+          carouselIndex = (carouselIndex + 1) % letters.length;
+          document.getElementById('carouselLetterLabel').textContent = 'Letter: ' + letters[carouselIndex];
+        }
+    
+        setInterval(rotateCarousel, 10000); // Rotate every 10 seconds
+    
+        function handleSearch(e) {
+          if (e.key === 'Enter') {
+            const query = e.target.value.trim().toUpperCase();
+            if (/^[A-Z]$/.test(query)) {
+              openLetterPopup(query);
+            } else {
+              alert('Please enter a valid single letter.');
+            }
+          }
+        }
+    
+        function openLetterPopup(letter) {
+          document.getElementById('letterPopup').classList.remove('hidden');
+          const popupImage = document.getElementById('popupImage');
+          popupImage.src = `https://source.unsplash.com/random/800x800?sig=${Math.floor(Math.random()*1000)}`;
+        }
+    
+        function closePopup(e) {
+          if (e.target.id === 'letterPopup') {
+            document.getElementById('letterPopup').classList.add('hidden');
+          }
+        }
+      </script>
+  </footer>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      text-align: center;
+      transition: background 0.4s, color 0.4s;
+    }
+    header, footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      backdrop-filter: blur(10px);
+      flex-wrap: wrap;
+    }
+    .menu select, .account-actions button, .search-container input, .nav-menu {
+      font-size: 1em;
+      text-align: center;
+      border-radius: 8px;
+      border: none;
+      padding: 0.6em 1em;
+      margin: 0.5em;
+    }
+    .search-container input {
+      width: 300px;
+      align-self: center;
+      text-align: center;
+    }
+    .carousel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3em 1em;
+    }
+    #carouselCanvas {
+      border: 3px solid #444;
+      background: #000;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 1400px;
+      height: auto;
+      aspect-ratio: 2 / 1;
+    }
+    .carousel-label {
+      font-size: 2.5em;
+      margin-bottom: 1em;
+    }
+    .buy-button {
+      margin-top: 1.5em;
+      padding: 1.2em 3em;
+      font-size: 1.5em;
+      color: #fff;
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s, background 0.4s;
+    }
+    .buy-button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(to right, #ff4b2b, #ff416c);
+    }
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(252, 98, 98, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .popup.hidden { display: none; }
+    #pixelCanvas {
+      border: 1px solid white;
+      width: 90vw;
+      height: 90vh;
+      border-radius: 10px;
+    }
+    .hero {
+      padding: 4em 2em;
+    }
+    .page-section {
+      padding: 2em;
+      max-width: 800px;
+      margin: auto;
+      text-align: left;
+    }
+    footer {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    footer a {
+      margin: 0 1em;
+      color: #ccc;
+      text-decoration: none;
+    }
+    .payment-icons {
+      font-size: 1.2em;
+      margin-top: 0.5em;
+      display: inline-block;
+    }
+    .legal-links a {
+      display: inline-block;
+      margin: 0.5em;
+      color: #bbb;
+      text-decoration: underline;
+      font-size: 0.9em;
+    }
+    @media (max-width: 768px) {
+      #carouselCanvas {
+        width: 95vw;
+        height: auto;
+        aspect-ratio: 2 / 1;
+      }
+      .carousel-label {
+        font-size: 2em;
+      }
+      .buy-button {
+        font-size: 1.2em;
+        padding: 1em 2em;
+      }
+    }
+  </style>
+</body>
+</html>
