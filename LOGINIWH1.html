@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IWasHere</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
+  <style>
+    body{
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      text-align: center;
+      transition: background 0.4s, color 0.4s;
+    }
+    header, footer {
+      display: flex;
+      text-align: center;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      background: (0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      flex-wrap: wrap;
+    }
+    header .search-container input {
+      text-align: center;  
+      font-size: 1em;
+      border-radius: 8px;
+      border: none;
+      padding: 0.6em 1em;
+      margin: 0.5em;
+    }
+    .account-actions button {
+      background-color: #2D8A67;
+      color: white;
+      padding: 0.5em 1em;
+      margin: 0 0.5em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .hero {
+      padding: 2em 3em;
+      text-align: center;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    }
+    .hero h1 {
+      font-size: 3em;
+      margin-bottom: 0.2em;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+
+    }
+    .carousel, .page-section {
+      padding: 2em;
+      background: transparent;
+      margin: 1em auto;
+      
+    }
+    .buy-button {
+        background-color: #2D8A67;
+      color: #fff;
+      padding: 1em 2em;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+    .popup-inner {
+      background-color: transparent;
+      padding: 3em;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: auto;
+    }
+    #loginModal input {
+      display: block;
+      margin: 0.5em auto;
+      padding: 0.6em;
+      width: 90%;
+      font-size: 1em;
+      border-radius: 20px;
+      background-color: #2a2a2a;
+      color: #fff;
+      border: none;
+    }
+    #loginModal button {
+      margin: 0.5em;
+      padding: 0.6em 1.2em;
+      font-size: 1em;
+      background-color: #2D8A67;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+    }
+    #homeModal button {
+      margin: 0.5em;
+      padding: 0.6em 1.2em;
+      font-size: 1em;
+      background-color: #2D8A67;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+    
+    }
+    .page-section {
+        padding: 2em;
+      max-width: 800px;
+      margin: auto;
+      text-align: left;
+    }
+    footer {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    #userPixels div {
+      background: #222;
+      padding: 1em;
+      border-radius: 8px;
+      margin-bottom: 1em;
+    }
+    #userPixels input {
+      width: 100%;
+      padding: 0.5em;
+      border-radius: 6px;
+      border: none;
+      background-color: #2a2a2a;
+      color: #fff;
+    }
+    footer p, footer a {
+      color: #aaa;
+      text-align: center;
+      font-size: 0.9em;
+      margin: 0.2em 0;
+    }
+
+  </style>
+</head>
+<body class="night-mode">
+    <header>
+        <a href="index.html"><button>Home</button></a>
+        <div class="search-container">
+          <input type="text" id="search" placeholder="Search users or letters...">
+        </div>
+      </header>
+    
+  <main>
+    <section class="hero">
+      <h1>IWasHere</h1>
+      <p>Leave Your Mark on Digital Eternity</p>
+      <p>IWasHere is a permanent, public monument built by humanity, one pixel at a time. No likes. No algorithms. Just your mark — here, forever.</p>
+    </section>
+
+    <section id="loginModal" class="popup hidden">
+      <div class="popup-inner" onclick="event.stopPropagation()">
+        <h2>Login or Register</h2>
+        <input type="email" id="email" placeholder="Email" />
+        <input type="password" id="password" placeholder="Password" />
+        <button onclick="loginUser()">Login</button>
+        <button onclick="registerUser()">Register</button>
+        <p id="loginMessage"></p>
+      </div>
+    </section>
+
+    <section id="who" class="page-section hidden">
+      <h2>Who We Are</h2>
+      <p>IWasHere is a modern cultural landmark: a shared space where anyone can leave a small but permanent mark. Each pixel is yours for life — unchangeable, unmistakable, and linked to your identity or message. No data mining. No reposts. Just you, preserved in digital stone.</p>
+    </section>
+
+    <section id="why" class="page-section hidden">
+      <h2>Why We Do It</h2>
+      <p>The internet moves fast — but memory should last. We created IWasHere to give people a way to be remembered, to participate in something timeless. This is not a social network. It’s not a financial product. It’s a participatory monument. A global mosaic of presence, pride, and permanence.</p>
+    </section>
+
+    <section id="faq" class="page-section hidden">
+      <h2>Frequently Asked Questions</h2>
+      <p><strong>What is IWasHere?</strong> A giant digital canvas made of 2.6 billion pixels across 26 letter-shaped spaces. Each pixel can be bought once and linked to your message, artwork, or identity.</p>
+      <p><strong>How much does it cost?</strong> €5 per pixel — one-time purchase, valid for life.</p>
+      <p><strong>Can I edit my pixel?</strong> Yes, you can customize your pixel after purchase. You can also transfer ownership once if you choose.</p>
+      <p><strong>Is this an investment or a cryptocurrency?</strong> No. IWasHere is not a token or a tradable asset. It’s cultural, not financial. There’s no resale market and no speculative value — only the meaning you give it.</p>
+      <p><strong>Who sees my pixel?</strong> Everyone. The IWasHere canvas is public, searchable, and designed to last indefinitely.</p>
+      <p><strong>Do I need an account?</strong> You can log in using your email or social media to manage your pixels. You don’t need an account to explore the monument.</p>
+    </section>
+  </main>
+
+  <footer>
+    <section id="footer" class="footer">
+    <div>
+      <p>© 2025 IWasHere. All rights reserved.</p>
+      <p>
+        <a href="#">Instagram</a> |
+        <a href="#">Twitter</a> |
+        <a href="#">TikTok</a> |
+        <a href="#">YouTube</a> |
+        <a href="#">Threads</a>
+      </p>
+      <p>Payment options:<br><span class="payment-icons">💳 Stripe &nbsp;&nbsp; 🅿️ PayPal</span></p>
+      <p class="legal-links">
+        <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Legal Notice</a>
+      </p>
+    </div>
+    </section>
+  </footer>
+
+  <script>
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+    function loginUser() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          document.getElementById('loginModal').classList.add('hidden');
+          loadUserPixels();
+        })
+        .catch(err => document.getElementById('loginMessage').textContent = err.message);
+    }
+    function registerUser() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          document.getElementById('loginModal').classList.add('hidden');
+          loadUserPixels();
+        })
+        .catch(err => document.getElementById('loginMessage').textContent = err.message);
+    }
+    function loadUserPixels() {
+      const user = auth.currentUser;
+      if (!user) return;
+      db.collection("pixels").where("owner", "==", user.uid).get()
+        .then(snapshot => {
+          const container = document.getElementById("userPixels");
+          container.innerHTML = "";
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            container.innerHTML += `<div><strong>Letter:</strong> ${data.letter}, <strong>Position:</strong> (${data.x},${data.y})<br>
+              <input type='text' value='${data.link || ""}' placeholder='Your Social Link' onchange="updatePixel('${doc.id}', this.value)" /></div>`;
+          });
+          document.getElementById("pixelEditor").classList.remove("hidden");
+        });
+    }
+    function updatePixel(id, link) {
+      db.collection("pixels").doc(id).update({ link });
+    }
+  </script>
+</body>
+</html>
+
